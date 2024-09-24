@@ -1,6 +1,6 @@
 // Play the chime when the button is clicked
 document.getElementById('chimeButton').addEventListener('click', function() {
-    const chimeSound = new Audio('chime.mp3');
+    const chimeSound = new Audio('chime3.mp3');
     chimeSound.play();
 });
 
