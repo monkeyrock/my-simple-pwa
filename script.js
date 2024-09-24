@@ -52,3 +52,26 @@ document.getElementById('captureButton').addEventListener('click', function() {
     // Overwrite the original image
     context.putImageData(imageData, 0, 0);
 });
+
+Promise.all([
+  faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+  faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+  faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+  faceapi.nets.ageGenderNet.loadFromUri('/models')
+]).then(startVideo);
+
+function startVideo() {
+  navigator.mediaDevices.getUserMedia({ video: {} })
+    .then(stream => {
+      document.getElementById('video').srcObject = stream;
+    })
+    .catch(err => console.error(err));
+}
+
+video.addEventListener('play', () => {
+  setInterval(async () => {
+    const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withAgeAndGender();
+    console.log(detections);
+  }, 100);
+});
+
