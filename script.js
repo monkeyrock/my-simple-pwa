@@ -72,7 +72,8 @@ function startVideo() {
 }
 
 video.addEventListener('play', () => {
-  setInterval(async () => {
+    console.log('Video is playing');
+    setInterval(async () => {
     const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withAgeAndGender();
     console.log(detections);
   }, 100);
