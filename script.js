@@ -58,7 +58,10 @@ Promise.all([
   faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
   faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
   faceapi.nets.ageGenderNet.loadFromUri('/models')
-]).then(startVideo);
+]).then(() => {
+  console.log('Models loaded successfully');
+  startVideo();
+}).catch(err => console.error('Model loading failed', err));
 
 function startVideo() {
   navigator.mediaDevices.getUserMedia({ video: {} })
