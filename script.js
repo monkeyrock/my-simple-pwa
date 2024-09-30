@@ -31,6 +31,7 @@ document.getElementById('captureButton').addEventListener('click', function() {
     const canvas = document.getElementById('photoCanvas');
     const context = canvas.getContext('2d');
 
+
     // Ensure the canvas is the same size as the video element
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
@@ -51,6 +52,16 @@ document.getElementById('captureButton').addEventListener('click', function() {
     }
     // Overwrite the original image
     context.putImageData(imageData, 0, 0);
+    
+    
+    // Create the image URL from the canvas
+    const dataURL = canvas.toDataURL('image/png');
+    
+    // Set up the download link
+    const downloadLink = document.getElementById('download');
+    downloadLink.href = dataURL;
+    downloadLink.style.display = 'inline';  // Make the download link visible
+    
 });
 
 Promise.all([
