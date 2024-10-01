@@ -25,7 +25,7 @@ if ('serviceWorker' in navigator) {
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     // Not adding `{ audio: true }` since we only want video now
     navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-        const video = document.getElementById('cameraStream');
+       // const video = document.getElementById('cameraStream');
         video.srcObject = stream;
         video.play();
     });
@@ -53,6 +53,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
+// Firebase storage reference
+const storage = firebase.storage();
 
 document.getElementById('captureButton').addEventListener('click', function() {
     const video = document.getElementById('cameraStream');
@@ -120,18 +123,22 @@ Promise.all([
 }).catch(err => console.error('Model loading failed', err));
 
 function startVideo() {
+  const video = document.getElementById('video');
   navigator.mediaDevices.getUserMedia({ video: {} })
     .then(stream => {
-      document.getElementById('video').srcObject = stream;
+      video.srcObject = stream;
+      video.play();
+
+      // Start face detection after video starts playing
+      video.addEventListener('play', () => {
+        console.log('Video is playing');
+        setInterval(async () => {
+          const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withAgeAndGender();
+          console.log(detections);
+        }, 100);
+      });
     })
-    .catch(err => console.error(err));
+    .catch(err => console.error('Error accessing camera', err));
 }
 
-video.addEventListener('play', () => {
-    console.log('Video is playing');
-    setInterval(async () => {
-    const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withAgeAndGender();
-    console.log(detections);
-  }, 100);
-});
 
