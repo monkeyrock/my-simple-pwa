@@ -1,3 +1,8 @@
+
+
+
+
+
 // Play the chime when the button is clicked
 document.getElementById('chimeButton').addEventListener('click', function() {
     const chimeSound = new Audio('chime3.mp3');
@@ -25,6 +30,29 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         video.play();
     });
 }
+
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyD3pfHC7Iopg8hEgen346H5Gr64YedTy-0",
+  authDomain: "lookinggood-1be57.firebaseapp.com",
+  projectId: "lookinggood-1be57",
+  storageBucket: "lookinggood-1be57.appspot.com",
+  messagingSenderId: "63258393133",
+  appId: "1:63258393133:web:de56ce4d5769f6d2d996a4",
+  measurementId: "G-S8BMQZF1HB"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 document.getElementById('captureButton').addEventListener('click', function() {
     const video = document.getElementById('cameraStream');
@@ -61,6 +89,23 @@ document.getElementById('captureButton').addEventListener('click', function() {
     const downloadLink = document.getElementById('download');
     downloadLink.href = dataURL;
     downloadLink.style.display = 'inline';  // Make the download link visible
+    
+      // Convert canvas to a blob (binary large object)
+  canvas.toBlob(function(blob) {
+    // Create a reference to the storage location
+    const storageRef = firebase.storage().ref('images/photo-' + Date.now() + '.png');
+    
+    // Upload the blob to Firebase
+    storageRef.put(blob).then(function(snapshot) {
+      console.log('Image uploaded successfully');
+      
+      // Optionally get the download URL
+      storageRef.getDownloadURL().then(function(url) {
+        console.log('File available at', url);
+        // You can display the URL or provide a download link to the user
+      });
+    });
+  }, 'image/png');
     
 });
 
