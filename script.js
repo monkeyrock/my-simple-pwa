@@ -83,6 +83,7 @@ document.getElementById('captureButton').addEventListener('click', function() {
     // Overwrite the original image
     context.putImageData(imageData, 0, 0);
 <<<<<<< HEAD
+<<<<<<< HEAD
     
     
     // Create the image URL from the canvas
@@ -110,6 +111,8 @@ document.getElementById('captureButton').addEventListener('click', function() {
     });
   }, 'image/png');
     
+=======
+>>>>>>> parent of f8359a9 (can save photos now)
 =======
 >>>>>>> parent of f8359a9 (can save photos now)
 });
