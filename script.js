@@ -118,6 +118,7 @@ document.getElementById('captureButton').addEventListener('click', function() {
 >>>>>>> parent of f8359a9 (can save photos now)
 =======
 >>>>>>> parent of f8359a9 (can save photos now)
+
 });
 
 Promise.all([
